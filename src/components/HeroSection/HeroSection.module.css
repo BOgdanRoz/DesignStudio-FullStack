@@ -1,0 +1,411 @@
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  min-height: calc(100svh - 72px);
+  padding: 80px clamp(24px, 12vw, 180px);
+  background-color: var(--color-milk);
+}
+
+.artwork {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  right: clamp(32px, 8vw, 120px);
+  width: 700px;
+  aspect-ratio: 1;
+  transform: translateY(-50%);
+}
+
+.artwork::after {
+  position: absolute;
+  top: 9%;
+  right: 10%;
+  width: 28%;
+  aspect-ratio: 1;
+  background-image: radial-gradient(var(--color-orange) 1.2px, transparent 1.3px);
+  background-size: 12px 12px;
+  content: "";
+}
+
+.orbit {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border: 1px solid var(--color-orange-soft);
+  border-radius: 50%;
+  animation: orbit-cycle 5s ease-in-out infinite;
+}
+
+.orbitDot,
+.mark,
+.spark,
+.motionLines,
+.frameSequence,
+.artworkLabel {
+  position: absolute;
+  z-index: 2;
+}
+
+.orbitDot {
+  top: 0;
+  left: 50%;
+  width: 12px;
+  aspect-ratio: 1;
+  border: 3px solid var(--color-milk);
+  border-radius: 50%;
+  background-color: var(--color-orange);
+  transform: translate(-50%, -50%);
+}
+
+.mark {
+  top: 50%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 43%;
+  aspect-ratio: 1;
+  border-radius: 34% 50% 42% 50%;
+  background-color: var(--color-orange);
+  translate: -50% -50%;
+  animation: mark-cycle 5s ease-in-out infinite;
+}
+
+.play {
+  position: absolute;
+  width: 0;
+  height: 0;
+  margin-left: 6%;
+  border-top: 14px solid transparent;
+  border-bottom: 14px solid transparent;
+  border-left: 20px solid var(--color-milk);
+  animation: show-play 5s steps(1, end) infinite;
+}
+
+.pause {
+  position: absolute;
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  animation: show-pause 5s steps(1, end) infinite;
+}
+
+.pause span {
+  width: 8px;
+  height: 28px;
+  border-radius: 2px;
+  background-color: var(--color-milk);
+}
+
+.spark {
+  top: 17%;
+  right: 19%;
+  width: 20px;
+  aspect-ratio: 1;
+  background-color: var(--color-ink);
+  rotate: 45deg;
+  animation: spark-cycle 5s ease-in-out infinite;
+}
+
+.motionLines {
+  bottom: 18%;
+  left: 8%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  rotate: -28deg;
+  animation: lines-cycle 5s ease-in-out infinite;
+}
+
+.motionLines span {
+  height: 2px;
+  border-radius: 2px;
+  background-color: var(--color-orange);
+}
+
+.motionLines span:nth-child(1) {
+  width: 42px;
+}
+
+.motionLines span:nth-child(2) {
+  width: 28px;
+}
+
+.motionLines span:nth-child(3) {
+  width: 14px;
+}
+
+.frameSequence {
+  right: 12%;
+  bottom: 18%;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-milk);
+  rotate: 4deg;
+  animation: frames-cycle 5s ease-in-out infinite;
+}
+
+.frameSequence span {
+  width: 26px;
+  height: 34px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-milk-dark);
+}
+
+.frameSequence span:nth-child(2) {
+  background-color: var(--color-orange-soft);
+}
+
+.frameSequence span:nth-child(3) {
+  background-color: var(--color-orange);
+}
+
+.artworkLabel {
+  z-index: 3;
+  right: 0;
+  bottom: 8%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 14px 18px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background-color: var(--color-milk);
+  animation: label-cycle 5s ease-in-out infinite;
+}
+
+.artworkLabel span:first-child {
+  color: var(--color-orange-deep);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+
+.artworkLabel span:last-child {
+  color: var(--color-ink);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+@keyframes show-play {
+  0%,
+  19.999%,
+  80%,
+  100% {
+    opacity: 1;
+  }
+
+  20%,
+  79.999% {
+    opacity: 0;
+  }
+}
+
+@keyframes show-pause {
+  0%,
+  19.999%,
+  80%,
+  100% {
+    opacity: 0;
+  }
+
+  20%,
+  79.999% {
+    opacity: 1;
+  }
+}
+
+@keyframes orbit-cycle {
+  0%,
+  20% {
+    transform: perspective(900px) rotateX(58deg) rotateZ(0deg);
+  }
+
+  35% {
+    transform: perspective(900px) rotateX(64deg) rotateZ(90deg);
+  }
+
+  50% {
+    transform: perspective(900px) rotateX(58deg) rotateZ(180deg);
+  }
+
+  65% {
+    transform: perspective(900px) rotateX(52deg) rotateZ(270deg);
+  }
+
+  80%,
+  100% {
+    transform: perspective(900px) rotateX(58deg) rotateZ(360deg);
+  }
+}
+
+@keyframes mark-cycle {
+  0%,
+  20%,
+  80%,
+  100% {
+    scale: 1;
+    rotate: 0deg;
+  }
+
+  50% {
+    scale: 1.06;
+    rotate: 8deg;
+  }
+}
+
+@keyframes spark-cycle {
+  0%,
+  20%,
+  80%,
+  100% {
+    rotate: 45deg;
+    scale: 1;
+  }
+
+  50% {
+    rotate: 135deg;
+    scale: 0.7;
+  }
+}
+
+@keyframes lines-cycle {
+  0%,
+  20%,
+  80%,
+  100% {
+    translate: 0;
+  }
+
+  50% {
+    translate: 14px -8px;
+  }
+}
+
+@keyframes frames-cycle {
+  0%,
+  20%,
+  80%,
+  100% {
+    translate: 0;
+  }
+
+  50% {
+    translate: -12px 8px;
+  }
+}
+
+@keyframes label-cycle {
+  0%,
+  20%,
+  80%,
+  100% {
+    translate: 0;
+  }
+
+  50% {
+    translate: 0 -10px;
+  }
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  width: min(60%, 760px);
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+  color: var(--color-muted);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.eyebrowDot {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 8px;
+  border-radius: 50%;
+  background-color: var(--color-orange);
+}
+
+.title {
+  max-width: 900px;
+  color: var(--color-ink);
+  font-size: clamp(56px, 8.4vw, 112px);
+  font-weight: 500;
+  letter-spacing: -0.075em;
+  line-height: 0.98;
+}
+
+.highlight {
+  color: var(--color-orange);
+}
+
+.description {
+  max-width: 510px;
+  margin-top: 28px;
+  color: var(--color-muted);
+  font-size: clamp(16px, 1.5vw, 18px);
+  line-height: 1.7;
+}
+
+.callToAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 36px;
+  padding: 13px 18px;
+  border-radius: 999px;
+  background-color: var(--color-orange);
+  color: var(--color-milk);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.callToAction:hover {
+  background-color: var(--color-orange-deep);
+}
+
+.arrow {
+  font-size: 17px;
+  line-height: 1;
+}
+
+@media (max-width: 760px) {
+  .hero {
+    min-height: calc(100svh - 120px);
+    padding: 64px 24px;
+  }
+
+  .artwork {
+    display: none;
+  }
+
+  .content {
+    width: 100%;
+  }
+
+  .eyebrow {
+    margin-bottom: 22px;
+    font-size: 12px;
+  }
+
+  .title {
+    font-size: clamp(52px, 13vw, 76px);
+  }
+
+  .description {
+    margin-top: 22px;
+  }
+}
