@@ -4,7 +4,9 @@ import styles from "./Header.module.css"
 function Header() {
     return (
         <header className={styles.header}>
-            <h2 className={styles.brand}>DESIGN STUDIO</h2>
+            <a className={styles.brand} href="#top" aria-label="Design Studio — back to page top">
+                DESIGN STUDIO
+            </a>
 
             <nav className={styles.navigation} aria-label="Main navigation">
                 <a className={styles.link} href="#services">Services</a>

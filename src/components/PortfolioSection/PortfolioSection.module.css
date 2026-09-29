@@ -1,0 +1,364 @@
+.section {
+  padding: 140px clamp(24px, 10vw, 150px);
+  background: var(--color-milk-dark);
+}
+
+.intro {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 60px;
+  padding-bottom: 72px;
+}
+
+.eyebrow,
+.label {
+  color: var(--color-orange-deep);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.intro h2 {
+  margin-top: 24px;
+  color: var(--color-ink);
+  font-size: clamp(48px, 7vw, 96px);
+  font-weight: 500;
+  letter-spacing: -0.08em;
+  line-height: 0.9;
+}
+
+.intro h2 span {
+  color: var(--color-orange);
+}
+
+.introCopy {
+  width: min(100%, 330px);
+  padding-bottom: 4px;
+  color: var(--color-muted);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.stats div {
+  display: grid;
+  gap: 8px;
+  padding: 22px 24px;
+  border-right: 1px solid var(--color-border);
+}
+
+.stats div:first-child {
+  padding-left: 0;
+}
+
+.stats div:last-child {
+  border-right: 0;
+}
+
+.stats strong {
+  color: var(--color-ink);
+  font-size: clamp(27px, 3vw, 42px);
+  font-weight: 500;
+  letter-spacing: -0.07em;
+}
+
+.stats span {
+  color: var(--color-muted);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.projects {
+  margin-top: 78px;
+}
+
+.project {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+  gap: clamp(32px, 6vw, 100px);
+  padding: 0 0 86px;
+}
+
+.project + .project {
+  padding-top: 86px;
+  border-top: 1px solid var(--color-border);
+}
+
+.visual {
+  position: relative;
+  height: clamp(300px, 43vw, 580px);
+  overflow: hidden;
+  background: var(--color-ink);
+}
+
+.visual img,
+.visualShade,
+.visualGrid {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.visual img {
+  object-fit: cover;
+  filter: saturate(0.6) contrast(1.05);
+  transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1), filter 700ms ease;
+}
+
+.project:hover .visual img {
+  transform: scale(1.06);
+  filter: saturate(1) contrast(1);
+}
+
+.visualShade {
+  z-index: 1;
+  background: linear-gradient(135deg, rgb(32 36 33 / 55%), transparent 50%, rgb(215 107 81 / 35%));
+}
+
+.visualGrid {
+  z-index: 2;
+  opacity: 0.25;
+  background-image: linear-gradient(rgb(248 247 243 / 30%) 1px, transparent 1px), linear-gradient(90deg, rgb(248 247 243 / 30%) 1px, transparent 1px);
+  background-size: 12.5% 20%;
+  mix-blend-mode: overlay;
+}
+
+.projectNumber {
+  position: absolute;
+  z-index: 3;
+  top: 24px;
+  left: 26px;
+  color: var(--color-milk);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+
+.play {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  width: 74px;
+  height: 74px;
+  place-items: center;
+  border: 1px solid var(--color-milk);
+  border-radius: 50%;
+  color: var(--color-milk);
+  font-size: 21px;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.7);
+  transition: opacity 250ms ease, transform 350ms ease;
+}
+
+.project:hover .play {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.visualCaption {
+  position: absolute;
+  z-index: 3;
+  right: 24px;
+  bottom: 22px;
+  left: 26px;
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-milk);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.orbitGraphic {
+  position: absolute;
+  z-index: 2;
+  right: 12%;
+  bottom: 15%;
+  width: 110px;
+  height: 55px;
+  border: 1px solid var(--color-orange-soft);
+  border-radius: 50%;
+  rotate: -28deg;
+  opacity: 0.7;
+}
+
+.orbitGraphic::after {
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-orange);
+  content: "";
+}
+
+.visual2 .orbitGraphic {
+  right: 18%;
+  bottom: 24%;
+  border-color: var(--color-milk);
+  rotate: 42deg;
+}
+
+.visual3 .orbitGraphic {
+  width: 150px;
+  height: 150px;
+  border-radius: 0;
+  border-color: var(--color-orange);
+  rotate: 18deg;
+}
+
+.projectInfo {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.projectTitle h3 {
+  max-width: 420px;
+  margin-top: 18px;
+  color: var(--color-ink);
+  font-size: clamp(30px, 4vw, 54px);
+  font-weight: 500;
+  letter-spacing: -0.07em;
+  line-height: 0.98;
+}
+
+.description {
+  max-width: 360px;
+  margin-top: 50px;
+  color: var(--color-muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.projectMeta {
+  display: grid;
+  gap: 0;
+  margin-top: 45px;
+  border-top: 1px solid var(--color-border);
+}
+
+.projectMeta span {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 15px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-ink);
+  font-size: 12px;
+}
+
+.projectMeta small {
+  color: var(--color-muted);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.bottomNote {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-top: 26px;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+.bottomNote a {
+  color: var(--color-orange-deep);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.bottomNote a span {
+  margin-left: 10px;
+  font-size: 17px;
+}
+
+.bottomNote a:hover {
+  color: var(--color-ink);
+}
+
+@media (max-width: 760px) {
+  .section {
+    padding: 90px 24px;
+  }
+
+  .intro {
+    display: block;
+    padding-bottom: 52px;
+  }
+
+  .introCopy {
+    margin-top: 35px;
+  }
+
+  .stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stats div:nth-child(2) {
+    border-right: 0;
+  }
+
+  .stats div:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .stats div:first-child {
+    padding-left: 0;
+  }
+
+  .project,
+  .project + .project {
+    display: block;
+    padding: 0 0 65px;
+  }
+
+  .project + .project {
+    padding-top: 65px;
+  }
+
+  .projectInfo {
+    display: block;
+    padding-top: 28px;
+  }
+
+  .description {
+    margin-top: 28px;
+  }
+
+  .projectMeta {
+    margin-top: 30px;
+  }
+
+  .bottomNote {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .visual img,
+  .play {
+    transition: none;
+  }
+}

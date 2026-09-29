@@ -1,0 +1,135 @@
+.backdrop {
+  position: fixed;
+  z-index: 10;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgb(32 36 33 / 72%);
+}
+
+.modal {
+  position: relative;
+  width: min(100%, 680px);
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+  padding: clamp(32px, 5vw, 58px);
+  background: var(--color-milk);
+  box-shadow: 0 24px 80px rgb(0 0 0 / 18%);
+}
+
+.close {
+  position: absolute;
+  top: 22px;
+  right: 25px;
+  border: 0;
+  background: transparent;
+  color: var(--color-muted);
+  cursor: pointer;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.eyebrow {
+  color: var(--color-orange-deep);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.modal h2 {
+  margin-top: 18px;
+  color: var(--color-ink);
+  font-size: clamp(42px, 6vw, 66px);
+  font-weight: 500;
+  letter-spacing: -0.07em;
+  line-height: 0.95;
+}
+
+.modal h2 span {
+  color: var(--color-orange);
+}
+
+.intro,
+.success > p:last-of-type {
+  max-width: 460px;
+  margin-top: 22px;
+  color: var(--color-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.form {
+  display: grid;
+  gap: 18px;
+  margin-top: 34px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form label {
+  display: grid;
+  gap: 8px;
+  color: var(--color-ink);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.form input,
+.form select,
+.form textarea {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  padding: 13px 14px;
+  background: white;
+  color: var(--color-ink);
+  font-size: 14px;
+  font-weight: 400;
+  outline: none;
+}
+
+.form input:focus,
+.form select:focus,
+.form textarea:focus {
+  border-color: var(--color-orange);
+}
+
+.form textarea {
+  resize: vertical;
+}
+
+.submit {
+  justify-self: start;
+  border: 0;
+  padding: 14px 20px;
+  background: var(--color-orange);
+  color: var(--color-milk);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.submit span {
+  margin-left: 12px;
+  font-size: 17px;
+}
+
+.submit:hover {
+  background: var(--color-orange-deep);
+}
+
+.success .submit {
+  margin-top: 34px;
+}
+
+@media (max-width: 600px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
