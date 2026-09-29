@@ -1,17 +1,29 @@
 .header {
+  position: sticky;
+  z-index: 20;
+  top: 0;
   display: flex;
   align-items: center;
   min-height: 72px;
   padding: 16px clamp(24px, 7vw, 104px);
   background-color: var(--color-milk);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .brand {
+  position: relative;
   flex: 1 1 0;
+  width: fit-content;
   color: var(--color-ink);
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.08em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.brand:focus-visible {
+  outline-offset: 5px;
 }
 
 .brand::after {

@@ -1,0 +1,55 @@
+.section {
+  padding: 150px clamp(24px, 12vw, 180px);
+  background-color: var(--color-orange);
+}
+
+.eyebrow {
+  margin-bottom: 28px;
+  color: var(--color-orange-soft);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.section h2 {
+  color: var(--color-milk);
+  font-size: clamp(58px, 9vw, 130px);
+  font-weight: 500;
+  letter-spacing: -0.08em;
+  line-height: 0.9;
+}
+
+.section h2 span {
+  color: var(--color-ink);
+}
+
+.email {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 52px;
+  padding-bottom: 8px;
+  border: 0;
+  border-bottom: 1px solid var(--color-milk);
+  color: var(--color-milk);
+  background: transparent;
+  cursor: pointer;
+  font-size: clamp(18px, 2vw, 26px);
+  text-decoration: none;
+}
+
+.email:hover {
+  color: var(--color-ink);
+  border-color: var(--color-ink);
+}
+
+.email span {
+  font-size: 22px;
+}
+
+@media (max-width: 700px) {
+  .section {
+    padding: 100px 24px;
+  }
+}
