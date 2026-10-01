@@ -52,3 +52,18 @@ export async function updateService( req: Request, res: Response) {
         return res.status(500)
     }
 }
+
+export async function deleteService(req: Request, res: Response) {
+    try {
+        const id = Number(req.params.id)
+        const existingService = await prisma.service.findUnique({ where: {id} })
+        if (!existingService) {
+            return res.status(404).json({ message: "Service not found" })
+        }
+        const service = await prisma.service.delete({ where: {id} })
+        res.status(200).json(service)
+    } catch (e) {
+        console.log(e)
+        return res.status(500)
+    }
+}
