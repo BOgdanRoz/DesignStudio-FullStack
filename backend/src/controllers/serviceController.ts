@@ -1,5 +1,6 @@
 import { prisma } from "../config/prisma"
 import type { Request, Response } from "express"
+import { Prisma } from "../generated/prisma/client"
 
 export async function getServices (req: Request, res: Response)  {
     try {
@@ -29,6 +30,22 @@ export async function getServiceById(req: Request, res: Response) {
         if (!service) {
             return res.status(404).json({ message: "Service not found" })
         }
+        res.status(200).json(service)
+    } catch (e) {
+        console.log(e)
+        return res.status(500)
+    }
+}
+
+export async function updateService( req: Request, res: Response) {
+    try {
+        const id = Number(req.params.id)
+        const serviceData = req.body
+        const existingService = await prisma.service.findUnique({ where: {id} })
+        if (!existingService) {
+            return res.status(404).json({ message: "Service not found" })
+        }
+        const service = await prisma.service.update({ where: {id}, data: serviceData })
         res.status(200).json(service)
     } catch (e) {
         console.log(e)
