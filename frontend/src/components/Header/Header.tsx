@@ -1,7 +1,11 @@
 
 import styles from "./Header.module.css"
 
-function Header() {
+type HeaderProps = {
+    onChangeRole: () => void
+}
+
+function Header({ onChangeRole }: HeaderProps) {
     return (
         <header className={styles.header}>
             <a className={styles.brand} href="#top" aria-label="Design Studio — back to page top">
@@ -14,6 +18,10 @@ function Header() {
                 <a className={styles.link} href="#about">About</a>
                 <a className={styles.link} href="#contact">Contact</a>
             </nav>
+
+            <button className={styles.changeRole} type="button" onClick={onChangeRole}>
+                Change role
+            </button>
         </header>
     )
 }

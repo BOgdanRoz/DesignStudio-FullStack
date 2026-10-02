@@ -1,6 +1,7 @@
+import { useEffect, useRef, useState } from "react"
 import styles from "./ServicesSection.module.css"
 
-type Service = {
+export type Service = {
     number: string
     type: string
     title: string
@@ -11,7 +12,7 @@ type Service = {
     featured?: boolean
 }
 
-const services: Service[] = [
+const initialServices: Service[] = [
     {
         number: "01",
         type: "For brands with a mark",
@@ -58,9 +59,101 @@ const process = [
     ["04", "Deliver", "You receive the right formats, versions, and a system your team can actually use."],
 ]
 
-function ServicesSection({ onOrder }: { onOrder: (service: string) => void }) {
+type ServicesSectionProps = {
+    role: "client" | "owner"
+    onOrder: (service: string) => void
+}
+
+const emptyService: Service = {
+    number: "",
+    type: "",
+    title: "",
+    description: "",
+    price: "",
+    timeline: "",
+    deliverables: [],
+}
+
+const servicesStorageKey = "design-studio-services"
+
+function isService(value: unknown): value is Service {
+    if (!value || typeof value !== "object") return false
+    const service = value as Partial<Service>
+    return typeof service.number === "string"
+        && typeof service.type === "string"
+        && typeof service.title === "string"
+        && typeof service.description === "string"
+        && typeof service.price === "string"
+        && typeof service.timeline === "string"
+        && Array.isArray(service.deliverables)
+        && service.deliverables.every((item) => typeof item === "string")
+}
+
+function loadServices(): Service[] {
+    const storedServices = localStorage.getItem(servicesStorageKey)
+    if (!storedServices) return initialServices
+
+    try {
+        const parsedServices: unknown = JSON.parse(storedServices)
+        if (Array.isArray(parsedServices) && parsedServices.every(isService)) return parsedServices
+    } catch (error) {
+        console.error("Unable to load saved services.", error)
+    }
+
+    return initialServices
+}
+
+function ServicesSection({ role, onOrder }: ServicesSectionProps) {
+    const [services, setServices] = useState(loadServices)
+    const [editingNumber, setEditingNumber] = useState<string | null>(null)
+    const [draft, setDraft] = useState<Service>(emptyService)
+    const [isAdding, setIsAdding] = useState(false)
+    const sectionRef = useRef<HTMLElement>(null)
+    const editorRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        const target = editingNumber || isAdding ? editorRef.current : sectionRef.current
+        target?.scrollIntoView({ behavior: "smooth", block: "start" })
+    }, [editingNumber, isAdding])
+
+    useEffect(() => {
+        try {
+            localStorage.setItem(servicesStorageKey, JSON.stringify(services))
+        } catch (error) {
+            console.error("Unable to save services.", error)
+        }
+    }, [services])
+
+    const startEditing = (service: Service) => {
+        setEditingNumber(service.number)
+        setDraft({ ...service, deliverables: [...service.deliverables] })
+    }
+
+    const saveService = () => {
+        if (!draft.title.trim() || !draft.description.trim()) return
+        const nextService = {
+            ...draft,
+            title: draft.title.trim(),
+            description: draft.description.trim(),
+            deliverables: draft.deliverables.filter(Boolean),
+        }
+        setServices((current) => editingNumber
+            ? current.map((service) => service.number === editingNumber ? nextService : service)
+            : [...current, { ...nextService, number: String(current.length + 1).padStart(2, "0") }])
+        setEditingNumber(null)
+        setIsAdding(false)
+    }
+
+    const deleteService = (number: string) => {
+        setServices((current) => current.filter((service) => service.number !== number))
+    }
+
+    const updateDraft = (field: keyof Service, value: string) => {
+        setDraft((current) => ({ ...current, [field]: value }))
+    }
+
     return (
-        <section className={styles.section} id="services">
+        <section className={styles.section} id="services" ref={sectionRef}>
             <div className={styles.intro}>
                 <div>
                     <p className={styles.eyebrow}>Services / Motion design</p>
@@ -89,13 +182,33 @@ function ServicesSection({ onOrder }: { onOrder: (service: string) => void }) {
                         </div>
                         <div className={styles.cardBottom}>
                             <div><strong>{service.price}</strong><span>{service.timeline}</span></div>
-                            <button type="button" onClick={() => onOrder(service.title)}>Request a quote <span aria-hidden="true">↗</span></button>
+                            {role === "client" ? (
+                                <button type="button" onClick={() => onOrder(service.title)}>Request a quote <span aria-hidden="true">↗</span></button>
+                            ) : (
+                                <div className={styles.ownerActions}>
+                                    <button type="button" onClick={() => startEditing(service)}>Edit</button>
+                                    <button type="button" onClick={() => deleteService(service.number)}>Delete</button>
+                                </div>
+                            )}
                         </div>
                     </article>
                 ))}
             </div>
 
-            <div className={styles.custom}>
+            {role === "owner" && (
+                <div className={styles.ownerPanel}>
+                    <p className={styles.eyebrow}>Owner controls</p>
+                    <h3>Manage your services.</h3>
+                    <p>Edit prices, descriptions, deliverables, or add a new service.</p>
+                    <button type="button" onClick={() => {
+                        setDraft({ ...emptyService })
+                        setEditingNumber(null)
+                        setIsAdding(true)
+                    }}>Add service <span aria-hidden="true">+</span></button>
+                </div>
+            )}
+
+            {role === "client" && <div className={styles.custom}>
                 <div className={styles.customGraphic} aria-hidden="true">
                     <span />
                     <span />
@@ -107,7 +220,29 @@ function ServicesSection({ onOrder }: { onOrder: (service: string) => void }) {
                     <p>Campaign systems, title sequences, event visuals, product explainers, and everything in between. Tell us what you are trying to move.</p>
                 </div>
                 <button type="button" onClick={() => onOrder("Custom motion project")}>Talk through your brief <span aria-hidden="true">↗</span></button>
-            </div>
+            </div>}
+
+            {role === "owner" && (editingNumber || isAdding) && (
+                <div className={styles.editor} ref={editorRef}>
+                    <p className={styles.eyebrow}>{editingNumber ? "Edit service" : "New service"}</p>
+                    <div className={styles.editorGrid}>
+                        <label>Title<input value={draft.title} onChange={(event) => updateDraft("title", event.target.value)} /></label>
+                        <label>Type<input value={draft.type} onChange={(event) => updateDraft("type", event.target.value)} /></label>
+                        <label>Price<input value={draft.price} onChange={(event) => updateDraft("price", event.target.value)} /></label>
+                        <label>Timeline<input value={draft.timeline} onChange={(event) => updateDraft("timeline", event.target.value)} /></label>
+                        <label className={styles.editorWide}>Description<textarea value={draft.description} onChange={(event) => updateDraft("description", event.target.value)} rows={3} /></label>
+                        <label className={styles.editorWide}>Deliverables <span className={styles.hint}>separate with commas</span><input value={draft.deliverables.join(", ")} onChange={(event) => setDraft((current) => ({ ...current, deliverables: event.target.value.split(",").map((item) => item.trim()) }))} /></label>
+                        <label className={styles.featuredToggle}>
+                            <input type="checkbox" checked={draft.featured ?? false} onChange={(event) => setDraft((current) => ({ ...current, featured: event.target.checked }))} />
+                            Mark as most popular
+                        </label>
+                    </div>
+                    <div className={styles.editorActions}>
+                        <button type="button" onClick={saveService}>Save service</button>
+                        <button type="button" onClick={() => { setEditingNumber(null); setIsAdding(false) }}>Cancel</button>
+                    </div>
+                </div>
+            )}
 
             <div className={styles.process}>
                 <div className={styles.processHeading}>
