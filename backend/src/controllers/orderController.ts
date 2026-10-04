@@ -22,3 +22,17 @@ export async function getOrders (req: Request, res: Response)  {
         return res.status(500).json({ message: "Failed to get orders" })
     }
 }
+
+export async function getOrderById(req: Request, res: Response) {
+    try {
+        const id = Number(req.params.id)
+        const order = await prisma.order.findUnique({ where: {id} })
+        if (!order) {
+            return res.status(404).json({ message: "Order not found" })
+        }
+        res.status(200).json(order)
+    } catch (e) {
+        console.log(e)
+        return res.status(500)
+    }
+}
