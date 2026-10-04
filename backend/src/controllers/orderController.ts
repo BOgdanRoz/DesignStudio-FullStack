@@ -36,3 +36,19 @@ export async function getOrderById(req: Request, res: Response) {
         return res.status(500)
     }
 }
+
+export async function updateOrder( req: Request, res: Response) {
+    try {
+        const id = Number(req.params.id)
+        const orderData = req.body
+        const existingOrder = await prisma.order.findUnique({ where: {id} })
+        if (!existingOrder) {
+            return res.status(404).json({ message: "Order not found" })
+        }
+        const order = await prisma.order.update({ where: {id}, data: orderData })
+        res.status(200).json(order)
+    } catch (e) {
+        console.log(e)
+        return res.status(500)
+    }
+}
