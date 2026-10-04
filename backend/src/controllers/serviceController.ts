@@ -4,7 +4,11 @@ import type { Request, Response } from "express"
 
 export async function getServices (req: Request, res: Response)  {
     try {
-        const services = await prisma.service.findMany()
+        const services = await prisma.service.findMany({
+            orderBy: {
+                position: "asc"
+            }
+        })
         res.status(200).json(services)  
     } catch (e) {
         console.log(e)
@@ -14,7 +18,28 @@ export async function getServices (req: Request, res: Response)  {
 
 export async function createService(req: Request, res: Response) {
     try {
-        const serviceData = req.body
+        const services = await prisma.service.findMany({
+            orderBy: {
+                position: "asc"
+            }
+        })
+        
+        let newPosition = 1
+        
+        while (services.some(service => service.position === newPosition)) {
+            newPosition++
+        }
+
+        const { title, description, includes, price, timeline } = req.body
+        const serviceData = {
+            title,
+            description,
+            includes,
+            price,
+            timeline,
+            position: newPosition
+        }
+
         const service = await prisma.service.create({ data: serviceData })
         res.status(201).json(service)
     } catch (e) {
@@ -40,7 +65,14 @@ export async function getServiceById(req: Request, res: Response) {
 export async function updateService( req: Request, res: Response) {
     try {
         const id = Number(req.params.id)
-        const serviceData = req.body
+        const { title, description, includes, price, timeline } = req.body
+        const serviceData = {
+            title,
+            description,
+            includes,
+            price,
+            timeline
+        }
         const existingService = await prisma.service.findUnique({ where: {id} })
         if (!existingService) {
             return res.status(404).json({ message: "Service not found" })

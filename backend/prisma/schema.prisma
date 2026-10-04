@@ -14,7 +14,7 @@ datasource db {
 
 model Service {
   id          Int      @id @default(autoincrement())
-  position    Int
+  position    Int      @default(0)
   title       String
   description String
   includes    String
