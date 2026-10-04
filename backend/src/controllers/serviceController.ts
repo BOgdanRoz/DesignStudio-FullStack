@@ -1,6 +1,6 @@
 import { prisma } from "../config/prisma"
 import type { Request, Response } from "express"
-import { Prisma } from "../generated/prisma/client"
+
 
 export async function getServices (req: Request, res: Response)  {
     try {
@@ -8,7 +8,7 @@ export async function getServices (req: Request, res: Response)  {
         res.status(200).json(services)  
     } catch (e) {
         console.log(e)
-        return res.status(500)
+        return res.status(500).json({ message: "Failed to get services" })
     }
 }
 
@@ -19,7 +19,7 @@ export async function createService(req: Request, res: Response) {
         res.status(201).json(service)
     } catch (e) {
         console.log(e)
-        return res.status(500)
+        return res.status(500).json({ message: "Faildes to create service" })
     }
 }
 
