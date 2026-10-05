@@ -30,7 +30,7 @@ export async function createOrder(req: Request, res: Response) {
 
             const order = await prisma.order.create({ data: orderData })
 
-            await sendNewOrderNotification()
+            await sendNewOrderNotification(order)
 
             res.status(201).json(order)
 
