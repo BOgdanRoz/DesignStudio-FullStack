@@ -1,11 +1,12 @@
 import type { Request, Response } from "express";
 import { createTelegramSession } from "../services/telegramSession";
+import "dotenv/config"
 
 export async function conectTelegram(req: Request, res: Response) {
     try {
         const session = await createTelegramSession()
-
-        const telegramLink = `https://t.me/@design_studio_demo_version_bot?start=${session.token}`
+        
+        const telegramLink = `https://t.me/${process.env.TELEGRAM_BOT_USERNAME!}?start=${session.token}`
 
         res.status(200).json({
             telegramLink

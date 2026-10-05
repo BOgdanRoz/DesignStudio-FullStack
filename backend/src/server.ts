@@ -2,6 +2,7 @@ import express from "express";
 import serviceRoutes from "./routes/serviceRoutes"
 import orderRoutes from "./routes/orderRoutes"
 import "./services/telegramBot"
+import telegramRoutes from "./routes/telegramRoutes"
 
 const app = express()
 
@@ -10,6 +11,7 @@ const port = 3000
 app.use(express.json())
 app.use("/api/services", serviceRoutes)
 app.use("/api/orders", orderRoutes)
+app.use("/api/telegram", telegramRoutes)
 
 app.get("/", (req, res) => {
     res.status(200).json("Design studio is running!")
