@@ -2,7 +2,8 @@ import { telegramBotToken } from "../config/telegram";
 import TelegramBot from "node-telegram-bot-api"
 import { prisma } from "../config/prisma";
 
-const bot = new TelegramBot(telegramBotToken, {
+
+export const bot = new TelegramBot(telegramBotToken, {
     polling: true
 })
 

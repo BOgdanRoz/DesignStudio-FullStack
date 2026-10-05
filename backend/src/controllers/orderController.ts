@@ -1,6 +1,7 @@
 import { prisma } from "../config/prisma"
 import { orderValidation } from "../validation/orderValidation"
 import type { Request, Response } from "express"
+import { sendNewOrderNotification } from "../services/telegramNotification"
 
 
 export async function createOrder(req: Request, res: Response) {
@@ -28,6 +29,9 @@ export async function createOrder(req: Request, res: Response) {
             }
 
             const order = await prisma.order.create({ data: orderData })
+
+            await sendNewOrderNotification()
+
             res.status(201).json(order)
 
         } else {
