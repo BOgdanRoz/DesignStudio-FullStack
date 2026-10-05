@@ -1,6 +1,7 @@
 import express from "express";
 import serviceRoutes from "./routes/serviceRoutes"
 import orderRoutes from "./routes/orderRoutes"
+import "./services/telegramBot"
 
 const app = express()
 
