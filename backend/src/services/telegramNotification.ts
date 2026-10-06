@@ -2,12 +2,13 @@ import { prisma } from "../config/prisma";
 import { bot } from "./telegramBot";
 
 export async function sendNewOrderNotification(order: {
-    name: string;
-    email: string;
-    company: string | null;
-    phone: string;
-    details: string | null;
-    serviceId: number;
+    id: number
+    name: string
+    email: string
+    company: string | null
+    phone: string
+    details: string | null
+    serviceId: number
 }) {
     const connection = await prisma.telegramConnection.findFirst({
         where: {
@@ -40,6 +41,7 @@ export async function sendNewOrderNotification(order: {
 🏢 Company: ${order.company ?? "Not provided"}
 📝 Details: ${order.details ?? "Not provided"}
 🛠 Service ID: ${service?.title ?? "Unknown service"}
+🔔 New order ID: ${order.id}
     `;
 
     await bot.sendMessage(

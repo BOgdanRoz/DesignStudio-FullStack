@@ -29,7 +29,7 @@ export async function createOrder(req: Request, res: Response) {
             }
 
             const order = await prisma.order.create({ data: orderData })
-            
+
             try {
                 await sendNewOrderNotification(order)
             } catch (e) {

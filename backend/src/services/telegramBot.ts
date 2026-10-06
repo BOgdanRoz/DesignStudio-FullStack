@@ -11,15 +11,25 @@ bot.onText(/\/start(?:\s+(.+))?/, async (msg, match) => {
     const sessionToken = match?.[1]
 
     if (!sessionToken) {
-        await bot.sendMessage(
-            msg.chat.id,
-            "Invalid connection link"
-        );
+        const exisitingChatId = await prisma.telegramConnection.findUnique({
+            where: {
+                chatId: String(msg.chat.id)
+            }
+        })
+
+        if (exisitingChatId) {
+            await bot.sendMessage(
+                msg.chat.id,
+                "Telegram is already connected!"
+            );
+        } else {
+            await bot.sendMessage(
+                msg.chat.id,
+                "Invalid connection link"
+            );
+        }
         return
     }
-
-    console.log("Session token:", sessionToken)
-    console.log("Chat ID:", msg.chat.id)
 
     const session = await prisma.telegramSession.findUnique({
         where: {
@@ -70,6 +80,6 @@ bot.onText(/\/start(?:\s+(.+))?/, async (msg, match) => {
 
     await bot.sendMessage(
         msg.chat.id,
-        "Telegram connected successfully!"
+        "Telegram connected successfully! Now u can get your orders here!"
     )
 })
