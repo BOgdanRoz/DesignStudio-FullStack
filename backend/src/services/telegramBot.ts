@@ -43,12 +43,28 @@ bot.onText(/\/start(?:\s+(.+))?/, async (msg, match) => {
         return
     }
 
-    await prisma.telegramSession.update({
+    const existingConnection = await prisma.telegramConnection.findFirst()
+
+    if (existingConnection) {
+        await prisma.telegramConnection.update({
+            where: {
+                id: existingConnection.id
+            },
+            data: {
+                chatId: String(msg.chat.id)
+            }
+        })
+    } else {
+        await prisma.telegramConnection.create({
+            data: {
+                chatId: String(msg.chat.id)
+            }
+        })
+    }
+
+    await prisma.telegramSession.delete({
         where: {
             id: session.id
-        },
-        data: {
-            chatId: String(msg.chat.id)
         }
     })
 

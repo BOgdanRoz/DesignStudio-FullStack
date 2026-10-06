@@ -9,7 +9,7 @@ export async function sendNewOrderNotification(order: {
     details: string | null;
     serviceId: number;
 }) {
-    const session = await prisma.telegramSession.findFirst({
+    const connection = await prisma.telegramConnection.findFirst({
         where: {
             chatId: {
                 not: null
@@ -20,7 +20,7 @@ export async function sendNewOrderNotification(order: {
         }
     })
 
-    if (!session?.chatId) {
+    if (!connection?.chatId) {
         console.log("No connected Telegram account")
         return
     }
@@ -43,7 +43,7 @@ export async function sendNewOrderNotification(order: {
     `;
 
     await bot.sendMessage(
-        session.chatId,
+        connection.chatId,
         message
     )
 }

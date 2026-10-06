@@ -29,9 +29,13 @@ export async function createOrder(req: Request, res: Response) {
             }
 
             const order = await prisma.order.create({ data: orderData })
-
-            await sendNewOrderNotification(order)
-
+            
+            try {
+                await sendNewOrderNotification(order)
+            } catch (e) {
+                console.log("Failed to send Telegram notification:", e)
+            }
+            
             res.status(201).json(order)
 
         } else {
