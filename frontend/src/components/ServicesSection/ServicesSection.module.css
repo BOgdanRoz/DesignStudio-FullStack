@@ -3,6 +3,97 @@
   background: var(--color-milk-dark);
 }
 
+.errorToast {
+  position: fixed;
+  z-index: 100;
+  top: 24px;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: min(calc(100% - 32px), 480px);
+  padding: 16px 18px;
+  border: 1px solid rgb(255 255 255 / 24%);
+  border-radius: 12px;
+  background: #b83c35;
+  box-shadow: 0 16px 38px rgb(104 26 22 / 24%);
+  color: #fff8f5;
+  animation: errorToastIn 260ms ease-out both;
+  transform: translateX(-50%);
+}
+
+.errorToastClosing {
+  animation: errorToastOut 260ms ease-in both;
+}
+
+.errorIcon {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 60%);
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.errorToast strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.errorToast p {
+  margin-top: 3px;
+  color: rgb(255 248 245 / 84%);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.errorToast button {
+  width: 28px;
+  height: 28px;
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  color: #fff8f5;
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1;
+  opacity: 0.8;
+}
+
+.errorToast button:hover,
+.errorToast button:focus-visible {
+  opacity: 1;
+}
+
+@keyframes errorToastIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes errorToastOut {
+  from {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate(-50%, -24px);
+  }
+}
+
 .intro {
   display: flex;
   align-items: end;

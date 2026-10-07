@@ -8,12 +8,13 @@ import Footer from "./components/Footer/Footer"
 import OrderModal from "./components/OrderModal/OrderModal"
 import RoleSelection from "./components/RoleSelection/RoleSelection"
 import type { Role } from "./components/RoleSelection/RoleSelection"
+import type { ServiceSelection } from "./components/ServicesSection/ServicesSection"
 import { useState } from "react"
 
 const roleStorageKey = "design-studio-role"
 
 function App() {
-  const [selectedService, setSelectedService] = useState<string | null>(null)
+  const [selectedService, setSelectedService] = useState<ServiceSelection | null>(null)
   const [hasSelectedRole, setHasSelectedRole] = useState(
     () => sessionStorage.getItem(roleStorageKey) !== null,
   )
@@ -42,11 +43,11 @@ function App() {
       <ServicesSection role={role ?? "client"} onOrder={setSelectedService}/>
       <PortfolioSection/>
       <AboutSection/>
-      {role === "client" && <ContactSection onOrder={() => setSelectedService("Project enquiry")}/>}
+      {role === "client" &&       <ContactSection onOrder={() => setSelectedService(null)}/>}
       <Footer/>
       {role === "client" && (
         <OrderModal
-          key={selectedService ?? "closed"}
+          key={selectedService?.serviceId ?? "closed"}
           service={selectedService}
           onClose={() => setSelectedService(null)}
         />

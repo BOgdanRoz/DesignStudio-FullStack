@@ -115,6 +115,18 @@
   font-weight: 600;
 }
 
+.submit:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.error {
+  margin-top: 2px;
+  color: #b83c35;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
 .submit span {
   margin-left: 12px;
   font-size: 17px;

@@ -2,13 +2,25 @@ import { useEffect, useState } from "react"
 import type { FormEvent } from "react"
 import styles from "./OrderModal.module.css"
 
+type OrderSelection = {
+    serviceId: number
+    title: string
+    services: {
+        id: number
+        title: string
+    }[]
+}
+
 type OrderModalProps = {
-    service: string | null
+    service: OrderSelection | null
     onClose: () => void
 }
 
 function OrderModal({ service, onClose }: OrderModalProps) {
     const [submitted, setSubmitted] = useState(false)
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [error, setError] = useState<string | null>(null)
+    const [selectedServiceId, setSelectedServiceId] = useState(service?.serviceId ?? 0)
 
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
@@ -27,7 +39,34 @@ function OrderModal({ service, onClose }: OrderModalProps) {
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        setSubmitted(true)
+        const formData = new FormData(event.currentTarget)
+        const payload = {
+            name: String(formData.get("name") ?? ""),
+            email: String(formData.get("email") ?? ""),
+            company: String(formData.get("company") ?? ""),
+            phone: String(formData.get("phone") ?? ""),
+            details: String(formData.get("details") ?? ""),
+            serviceId: selectedServiceId,
+        }
+
+        setError(null)
+        setIsSubmitting(true)
+        void fetch("http://localhost:3000/api/orders", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+        })
+            .then(async (response) => {
+                if (!response.ok) {
+                    const body = await response.json().catch(() => null) as { message?: string } | null
+                    throw new Error(body?.message ?? `Request failed with status ${response.status}`)
+                }
+                setSubmitted(true)
+            })
+            .catch((requestError: unknown) => {
+                setError(requestError instanceof Error ? requestError.message : "Unable to send enquiry")
+            })
+            .finally(() => setIsSubmitting(false))
     }
 
     return (
@@ -50,12 +89,17 @@ function OrderModal({ service, onClose }: OrderModalProps) {
                         <p className={styles.intro}>Tell us a little about your project and we’ll come back with the right next step.</p>
                         <form className={styles.form} onSubmit={handleSubmit}>
                             <label>Service
-                                <select name="service" defaultValue={service} required>
-                                    <option>{service}</option>
-                                    <option>Logo animation</option>
-                                    <option>Social motion pack</option>
-                                    <option>Short animation film</option>
-                                    <option>3D & visual effects</option>
+                                <select
+                                    name="service"
+                                    value={selectedServiceId}
+                                    onChange={(event) => setSelectedServiceId(Number(event.target.value))}
+                                    required
+                                >
+                                    {service.services.map((availableService) => (
+                                        <option value={availableService.id} key={availableService.id}>
+                                            {availableService.title}
+                                        </option>
+                                    ))}
                                 </select>
                             </label>
                             <div className={styles.row}>
@@ -67,7 +111,10 @@ function OrderModal({ service, onClose }: OrderModalProps) {
                                 <label>Phone<input name="phone" type="tel" placeholder="+1 000 000 0000" required /></label>
                             </div>
                             <label>Project details<textarea name="details" placeholder="What are you hoping to create?" rows={4} required /></label>
-                            <button className={styles.submit} type="submit">Send enquiry <span aria-hidden="true">↗</span></button>
+                            {error && <p className={styles.error} role="alert">{error}</p>}
+                            <button className={styles.submit} type="submit" disabled={isSubmitting}>
+                                {isSubmitting ? "Sending..." : "Send enquiry"} {!isSubmitting && <span aria-hidden="true">↗</span>}
+                            </button>
                         </form>
                     </>
                 )}
