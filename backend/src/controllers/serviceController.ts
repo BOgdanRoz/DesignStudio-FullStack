@@ -92,6 +92,16 @@ export async function deleteService(req: Request, res: Response) {
         if (!existingService) {
             return res.status(404).json({ message: "Service not found" })
         }
+        const existingOrders = await prisma.order.findFirst({
+            where: {
+                serviceId: id
+            }
+        })
+        if (existingOrders) {
+            return res.status(409).json({
+                message: "Cannot delete service because it has orders"
+            })
+        }
         const service = await prisma.service.delete({ where: {id} })
         res.status(200).json(service)
     } catch (e) {
