@@ -1,75 +1,72 @@
-# React + TypeScript + Vite
+# Design Studio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Full-stack pet project for a fictional graphic design studio.
 
-Currently, two official plugins are available:
+## About
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Design Studio is a React + Node.js application with:
 
-## React Compiler
+- service management
+- client order form
+- PostgreSQL database
+- Telegram notifications
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+**Frontend:** React, TypeScript, Vite, CSS Modules
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**Backend:** Node.js, Express, TypeScript, Prisma, PostgreSQL
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+**Other:** Git, GitHub, Postman, Telegram Bot API
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Features
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Client / Owner demo modes
+- Services CRUD
+- Order creation and validation
+- PostgreSQL data storage
+- Telegram order notifications
+- REST API
 
-```
+## Screenshots
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+![First Screen](screenshots/first%20screen.jpg)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+![Hero](screenshots/hero.jpg)
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+![Service](screenshots/service.jpg)
 
-```
+![Order](screenshots/order.jpg)
+
+## AI-Assisted Development
+
+The **frontend was developed fully with the help of AI**.
+
+This was intentional: one of the goals of the project was to learn how to use AI effectively in real development — writing clear prompts, reviewing generated code, understanding it, testing it and integrating it into the project.
+
+The **backend was developed independently**, while studying Node.js, Express, REST API, PostgreSQL, Prisma, validation and Telegram Bot API.
+
+## Project Structure
+
+DesignStudio-FullStack/
+├── frontend/
+├── backend/
+├── .gitignore
+└── README.md
+
+Running Locally
+git clone <https://github.com/BOgdanRoz/DesignStudio-FullStack>
+
+cd frontend
+npm install
+npm run dev
+
+cd backend
+npm install
+npx prisma migrate dev
+npm run dev
+
+Create .env in backend with your database and Telegram credentials.
+
+Status:
+Project completed.
